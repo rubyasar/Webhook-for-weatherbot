@@ -10,7 +10,7 @@ from flask import make_response
 app=Flask(__name__)
 @app.route('/webhook',methods=['Post'])
 def webhook():
-	req=request.get_json(silent=True,force=True)
+	req=request.get_json(silent=False,force=True)
 	print(json.dumps(req,indent=4))
 	
 	res=makeResponse(req)
