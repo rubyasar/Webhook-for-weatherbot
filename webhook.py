@@ -2,6 +2,7 @@ import json
 import os
 import requests
 import datetime
+from dateutil import parser
 
 from flask import Flask
 from flask import request
@@ -24,14 +25,16 @@ def makeResponse(req):
 	parameters=queryResult.get("parameters")
 	geocity=parameters.get("geo-city")
 	date=parameters.get("date")
+	dt = parser.parse(date)
 	now = datetime.datetime.now()
-	cnt=date-now
+	naive = now.replace(tzinfo=None)
+	cnt=dt.replace(tzinfo=None)-now
 	
-	r=requests.get("http://api.openweathermap.org/data/2.5/forecast/daily?q="+city+"&cnt="+cnt+"&appid=a28c94ceb5c94ddb9beb8780a7eb4b1c")
+	r=requests.get("https://samples.openweathermap.org/data/2.5/forecast/daily?q="+geocity+"&appid=b6907d289e10d714a6e88b30761fae22")
 	json_object=r.json()
 	ls=json_object['list']	
-	condition=ls[cnt]['weather'][0]['description']	
-	speech="The forecast for the "+city+" for "+ date+" is "+condition
+	condition=ls[cnt.days]['weather'][0]['description']	
+	speech="The forecast for the "+geocity+" for "+ date+" is "+condition
 	
 	return{
 	"speech":speech,
@@ -41,4 +44,4 @@ def makeResponse(req):
 if __name__=='__main__':
 	port=int(os.getenv('PORT',5000))
 	print("starting app on the port",port)
-	app.run(debug=False,port=port,host='0.0.0.0')
+	app.run(debug=True,port=port,host='0.0.0.0')
