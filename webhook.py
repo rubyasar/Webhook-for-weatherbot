@@ -38,7 +38,7 @@ def makeResponse(req):
 	
 	return{
 	"speech":speech,
-	"displayText":speech,
+	"fulfillmentText":speech,
 	"source":""}
 	
 if __name__=='__main__':
