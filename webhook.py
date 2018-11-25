@@ -37,7 +37,7 @@ def makeResponse(req):
 	speech="The forecast for the "+geocity+" for "+ date+" is "+condition
 	
 	return{
-	"speech":speech,
+	
 	"fulfillmentText":speech,
 	"source":""}
 	
